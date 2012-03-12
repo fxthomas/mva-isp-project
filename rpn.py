@@ -11,6 +11,12 @@
 # 
 # (ɔ) François-Xavier Thomas <fx.thomas@gmail.com>
 
+# This script processes an image through periodic+smooth decomposition
+# See: http://www.math-info.univ-paris5.fr/~moisan/p+s/ for more details
+#
+# Usage: python rpn.py sample.png
+# Or: from rpn import perdecomp
+
 from numpy import *
 from scipy import *
 from pylab import *
