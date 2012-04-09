@@ -11,4 +11,6 @@
 # 
 # (ɔ) François-Xavier Thomas <fx.thomas@gmail.com>
 
-from texturize import perdecomp,harmonize,tile
+import texturize
+import randomize
+import shortcuts

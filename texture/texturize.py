@@ -40,19 +40,19 @@ def perdecomp (image):
   multi[0,0] = 1.
 
   # Compute DFT of boundary image
-  sh = fftn (v, axes=(-3, -2))
+  sh = fftn (v, axes=(0, 1))
 
   # Multiply by inverse of multiplier
   sh = sh / multi.reshape((h,w,1))
   sh[0,0,:] = zeros ((d))
 
   # Then, compute s as the iDFT of sh
-  smooth = real (ifftn (sh, axes=(-3, -2)))
+  smooth = real (ifftn (sh, axes=(0, 1)))
   periodic = image - smooth
 
   return harmonize(periodic),harmonize(smooth)
 
-def tile (a, ni=2, nj=2):
+def tile (a, ni=2, nj=2, modifier=None):
   nshape = list(a.shape)
   nshape[0] = nshape[0] * ni
   nshape[1] = nshape[1] * nj
@@ -60,6 +60,9 @@ def tile (a, ni=2, nj=2):
   ret = zeros (nshape, dtype=a.dtype)
   for i in range(ni):
     for j in range(nj):
-      ret[i*a.shape[0]:(i+1)*a.shape[0], j*a.shape[1]:(j+1)*a.shape[1]] = a
+      if modifier is None:
+        ret[i*a.shape[0]:(i+1)*a.shape[0], j*a.shape[1]:(j+1)*a.shape[1]] = a
+      else:
+        ret[i*a.shape[0]:(i+1)*a.shape[0], j*a.shape[1]:(j+1)*a.shape[1]] = modifier(a)
 
   return ret
