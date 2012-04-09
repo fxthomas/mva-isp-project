@@ -17,17 +17,11 @@
 # Usage: python rpn.py sample.png
 # Or: from rpn import perdecomp
 
-from numpy import *
-from scipy import *
-from pylab import *
-
-from sys import argv
+from numpy import zeros,real,arange,cos,sin,min,max,meshgrid,pi
+from numpy.fft import ifftn,fftn
 
 def harmonize (t):
-  return (t - np.min(t))/(np.max(t) - np.min(t))
-
-def imagesc (i):
-  imshow (harmonize (i))
+  return (t - min(t))/(max(t) - min(t))
 
 def perdecomp (image):
   # Compute boundary image
@@ -42,7 +36,7 @@ def perdecomp (image):
   x = arange (0., 1., 1./w)
   y = arange (0., 1., 1./h)
   xx,yy = meshgrid (x,y)
-  multi = 4 - 2.*cos(2*np.pi*xx) - 2.*cos(2*np.pi*yy)
+  multi = 4 - 2.*cos(2*pi*xx) - 2.*cos(2*pi*yy)
   multi[0,0] = 1.
 
   # Compute DFT of boundary image
@@ -58,17 +52,14 @@ def perdecomp (image):
 
   return harmonize(periodic),harmonize(smooth)
 
-if __name__ == '__main__':
-  # Read image
-  image = imread (argv[1])
+def tile (a, ni=2, nj=2):
+  nshape = list(a.shape)
+  nshape[0] = nshape[0] * ni
+  nshape[1] = nshape[1] * nj
 
-  # Compute periodic decomposition
-  per, smo = perdecomp (image)
+  ret = zeros (nshape, dtype=a.dtype)
+  for i in range(ni):
+    for j in range(nj):
+      ret[i*a.shape[0]:(i+1)*a.shape[0], j*a.shape[1]:(j+1)*a.shape[1]] = a
 
-  # Show periodic component
-  imagesc (per)
-  show()
-
-  # Show smooth component
-  imagesc (smo)
-  show()
+  return ret
