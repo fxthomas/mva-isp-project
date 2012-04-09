@@ -12,6 +12,7 @@
 # (ɔ) François-Xavier Thomas <fx.thomas@gmail.com>
 
 from texture.shortcuts import rpn
+from pylab import *
 from cv2 import imwrite,imread
 import sys
 import os

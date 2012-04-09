@@ -16,4 +16,4 @@ from texturize import perdecomp,harmonize,tile
 
 def rpn (sample, ni=2, nj=2):
   p,_ = perdecomp (sample)
-  return harmonize (tile (p, ni, nj, randomize.rpn))
+  return tile (p, ni, nj, randomize.rpn)
